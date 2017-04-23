@@ -8,13 +8,14 @@ The creaters of this software omit any responsibility for misuse.
 
 # Apache server tree
 
-| /index.html
-| /test_1.pdf (indexed)
-| /test_2.pdf (hidden)
-|
-| ------------ hidden/ (hidden)
-| --------------------hidden/test_2.pdf (hidden)
-|
+| /index.html  
+| /test_1.pdf (indexed)  
+| /test_2.pdf (hidden)  
+|  
+| ------------ hidden/ (hidden)  
+| --------------------hidden/test_2.pdf (hidden)  
+|  
+
 
 # Current Task
 **Grab all pdf files from server**
