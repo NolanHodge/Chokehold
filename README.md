@@ -23,5 +23,5 @@ wget's recursive grab of all pdfs only grabs files that the server has listed in
 
 The goal is create a command that will grab test2.pdf and the hidden/ subdirectory as well as its contents.
 
-
+(Note it is possible to do a 'wget localhost:9999/hidden/test_2.pdf' to grab the document, but we want to grab all hidden files without explicitly telling the command)
 
