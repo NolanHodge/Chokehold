@@ -40,4 +40,5 @@ int main()
 
     Chokehold ch(input_url);
     ch.getAllOfFileType(PDF);
+    ch.getAllOfFileType(JPG);
 }
