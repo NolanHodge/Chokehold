@@ -1,43 +1,70 @@
 #include "Chokehold.hh"
 
-Chokehold::Chokehold(std::string URL)
-{
-  url = URL;
-}
-
-Chokehold::~Chokehold()
-{
-    // nada
-}
-
 void Chokehold::getAllOfFileType(std::string filetype)
 {
+    if (filetype == "")
+    {
+        std::cout << "Enter type of file (pdf, jpg, etc.)" << std::endl;
+        std::cin >> filetype;
+    }
+
     std::stringstream wget_string;
-    wget_string << "wget -A pdf i -P ";
+    wget_string << "wget -q -A i -P";
     wget_string << filetype;
     wget_string<< " -m -p -E -k -K -np ";
     wget_string << url;
 
-    system(wget_string.str().c_str());
+    int ret = system(wget_string.str().c_str());
+    if (ret == 0)
+    {
+        std::cout << "Success!, files have been saved in " << filetype << "/" << url << std::endl;
+    }
 }
 
-int main()
+void Chokehold::bruteForceDirectories(std::string dict)
 {
-    std::cout << "WARNING! \nThis program is to be used on your own server, and " \
-        "your own network! \nThis software was not created for malicous intent " \
-        "or use. \nThe creaters of this software omit any responsibility for misuse." \
-        "\n\n"; 
-    
-    std::string input_url;
-    std::cout << "Enter url: ";
-    std::cin >> input_url;
+    int ret;
 
-    //@TODO Intended for debug use only
-    if (input_url.size() < 2)
+    if (dict == "")
     {
-        input_url = "localhost:9999";
+        std::cout << "Enter dictionary location: ";
+        std::cin >> dict;
     }
+    std::ifstream dictfile;
+    dictfile.open(dict.c_str());
 
-    Chokehold ch(input_url);
-    ch.getAllOfFileType(PDF);
+    std::string line;
+    if (dictfile.is_open())
+    {
+        while (getline(dictfile, line))
+        {
+            line.erase(std::remove(line.begin(), line.end(), '\''), line.end());
+            std::stringstream wget_string;
+            wget_string << "wget -q " << url << "/" << line;
+            ret = system(wget_string.str().c_str());
+            if (ret == 0)
+            {
+                std::cout << "Found directory: " << line << std::endl;
+            }
+        }
+        dictfile.close();
+    }
+    else
+    {
+        std::cout << "Could not open file: " << dict << " Make sure you entered it correctly.\n", dict;
+    }
+}
+
+void Chokehold::executeCommand(int command)
+{
+    switch (command)
+    {
+        case CHOKEHOLD_GET_ALL_OF_FILE_TYPE:
+            getAllOfFileType();
+            break;
+
+        case CHOKEHOLD_BRUTE_FORCE_DIRECTORIES:
+            bruteForceDirectories();
+            break;
+    }
 }
