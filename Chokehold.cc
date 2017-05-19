@@ -9,7 +9,7 @@ void Chokehold::getAllOfFileType(std::string filetype)
     }
 
     std::stringstream wget_string;
-    wget_string << "wget -q -A i -P";
+    wget_string << "wget -q -A -i -P";
     wget_string << filetype;
     wget_string<< " -m -p -E -k -K -np ";
     wget_string << url;
@@ -36,15 +36,25 @@ void Chokehold::bruteForceDirectories(std::string dict)
     std::string line;
     if (dictfile.is_open())
     {
+	char letter = 0;
+	std::cout << "Current letter: ";
+	fflush(stdout);
         while (getline(dictfile, line))
         {
-            line.erase(std::remove(line.begin(), line.end(), '\''), line.end());
+            if (line[0] != letter)
+	    {
+		letter = line[0];
+		std::cout << letter << " ";
+		fflush(stdout);
+	    }
+	    line.erase(std::remove(line.begin(), line.end(), '\''), line.end());
             std::stringstream wget_string;
             wget_string << "wget -q " << url << "/" << line;
             ret = system(wget_string.str().c_str());
             if (ret == 0)
             {
-                std::cout << "Found directory: " << line << std::endl;
+                std::cout << std::endl << "Found directory: " << line << std::endl;
+		fflush(stdout);
             }
         }
         dictfile.close();

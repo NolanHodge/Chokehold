@@ -8,7 +8,7 @@ Console::Console()
     //@TODO Intended for debug use only
     if (url.size() < 2)
     {
-        url = "localhost:9999";
+        url = "192.168.0.14:9999";
     }
 
     std::stringstream ping_command;
